@@ -40,6 +40,32 @@
             100% { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 0.3; }
         }
         
+        /* Floating Images */
+        .floating-image {
+            position: fixed;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            z-index: -1;
+            animation: floatImage 30s linear infinite;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+        }
+        
+        .floating-image:nth-child(7) { top: 20%; left: 10%; animation-delay: 0s; }
+        .floating-image:nth-child(8) { top: 40%; right: 12%; animation-delay: -10s; }
+        .floating-image:nth-child(9) { top: 80%; left: 15%; animation-delay: -20s; }
+        .floating-image:nth-child(10) { top: 60%; right: 10%; animation-delay: -25s; }
+        
+        @keyframes floatImage {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.3; }
+            25% { transform: translate(60px, -30px) rotate(90deg) scale(1.05); opacity: 0.6; }
+            50% { transform: translate(30px, -60px) rotate(180deg) scale(0.95); opacity: 0.3; }
+            75% { transform: translate(-30px, -30px) rotate(270deg) scale(1.05); opacity: 0.6; }
+            100% { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 0.3; }
+        }
+        
         /* Data Processing Animation */
         .processing-bar {
             position: absolute;
@@ -396,6 +422,12 @@
     <div class="floating-comparison"><i class="fas fa-check-double"></i></div>
     <div class="floating-comparison"><i class="fas fa-diff"></i></div>
     <div class="floating-comparison"><i class="fas fa-clipboard-check"></i></div>
+    
+    <!-- Floating Images -->
+    <img src="{{ url_for('static', filename='images/1743154000411.jpeg') }}" alt="Floating Image 1" class="floating-image">
+    <img src="{{ url_for('static', filename='images/sf-express-logo.png') }}" alt="Floating Image 2" class="floating-image">
+    <img src="{{ url_for('static', filename='images/ibob-logo.png') }}" alt="Floating Image 3" class="floating-image">
+    <img src="{{ url_for('static', filename='images/1743154000411.jpeg') }}" alt="Floating Image 4" class="floating-image">
 
 <div class="container py-5">
     <div class="header-container">

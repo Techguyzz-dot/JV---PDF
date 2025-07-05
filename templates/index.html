@@ -40,6 +40,32 @@
             100% { transform: translate(0, 0) rotate(360deg); opacity: 0.3; }
         }
         
+        /* Floating Images */
+        .floating-image {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            z-index: -1;
+            animation: floatImage 25s linear infinite;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 3px solid rgba(255, 255, 255, 0.8);
+        }
+        
+        .floating-image:nth-child(7) { top: 15%; left: 12%; animation-delay: 0s; }
+        .floating-image:nth-child(8) { top: 35%; right: 15%; animation-delay: -8s; }
+        .floating-image:nth-child(9) { top: 75%; left: 8%; animation-delay: -15s; }
+        .floating-image:nth-child(10) { top: 55%; right: 8%; animation-delay: -22s; }
+        
+        @keyframes floatImage {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.4; }
+            25% { transform: translate(80px, -40px) rotate(90deg) scale(1.1); opacity: 0.7; }
+            50% { transform: translate(40px, -80px) rotate(180deg) scale(0.9); opacity: 0.4; }
+            75% { transform: translate(-40px, -40px) rotate(270deg) scale(1.1); opacity: 0.7; }
+            100% { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 0.4; }
+        }
+        
         /* Scanning Line Effect */
         .scanning-line {
             position: absolute;
@@ -358,6 +384,12 @@
     <div class="floating-pdf"><i class="fas fa-file-pdf"></i></div>
     <div class="floating-pdf"><i class="fas fa-file-pdf"></i></div>
     <div class="floating-pdf"><i class="fas fa-file-pdf"></i></div>
+    
+    <!-- Floating Images -->
+    <img src="{{ url_for('static', filename='images/1743154000411.jpeg') }}" alt="Floating Image 1" class="floating-image">
+    <img src="{{ url_for('static', filename='images/sf-express-logo.png') }}" alt="Floating Image 2" class="floating-image">
+    <img src="{{ url_for('static', filename='images/ibob-logo.png') }}" alt="Floating Image 3" class="floating-image">
+    <img src="{{ url_for('static', filename='images/1743154000411.jpeg') }}" alt="Floating Image 4" class="floating-image">
 
 <div class="container py-5">
     <div class="header-container">

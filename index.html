@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JV Tools - PDF Comparison</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: #f8f9fa; }
+        .brand { font-size: 2rem; font-weight: bold; color: #2c3e50; margin-bottom: 1rem; }
+        .upload-box { background: #fff; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <div class="text-center brand">JV Tools</div>
+    <div class="upload-box mx-auto" style="max-width: 500px;">
+        <h3 class="mb-4">PDF Comparison Tool</h3>
+        <form method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="pdf1" class="form-label">Upload First PDF</label>
+                <input class="form-control" type="file" id="pdf1" name="pdf1" accept="application/pdf" required>
+            </div>
+            <div class="mb-3">
+                <label for="pdf2" class="form-label">Upload Second PDF</label>
+                <input class="form-control" type="file" id="pdf2" name="pdf2" accept="application/pdf" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Compare PDFs</button>
+        </form>
+    </div>
+</div>
+</body>
+</html> 

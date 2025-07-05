@@ -89,4 +89,7 @@ def index():
 
 # For Vercel deployment
 if __name__ == '__main__':
-    app.run(debug=True, port=8000) 
+    app.run(debug=True, port=8000)
+
+# Export the Flask app for Vercel
+application = app 

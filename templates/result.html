@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Checker - Comparison Results</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { 
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -12,10 +13,78 @@
             margin: 0;
             padding: 20px 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
         }
         
-        .removed { background: #ffe6e6; color: #c0392b; text-decoration: line-through; }
-        .added { background: #e6ffe6; color: #27ae60; font-weight: bold; }
+        /* Floating Comparison Icons */
+        .floating-comparison {
+            position: fixed;
+            font-size: 1.5rem;
+            color: rgba(102, 126, 234, 0.3);
+            z-index: -1;
+            animation: floatComparison 25s linear infinite;
+        }
+        
+        .floating-comparison:nth-child(1) { top: 15%; left: 8%; animation-delay: 0s; }
+        .floating-comparison:nth-child(2) { top: 25%; right: 12%; animation-delay: -8s; }
+        .floating-comparison:nth-child(3) { top: 65%; left: 18%; animation-delay: -15s; }
+        .floating-comparison:nth-child(4) { top: 85%; right: 8%; animation-delay: -22s; }
+        .floating-comparison:nth-child(5) { top: 45%; left: 85%; animation-delay: -5s; }
+        .floating-comparison:nth-child(6) { top: 75%; right: 85%; animation-delay: -18s; }
+        
+        @keyframes floatComparison {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.3; }
+            25% { transform: translate(80px, -40px) rotate(90deg) scale(1.1); opacity: 0.6; }
+            50% { transform: translate(40px, -80px) rotate(180deg) scale(0.9); opacity: 0.3; }
+            75% { transform: translate(-40px, -40px) rotate(270deg) scale(1.1); opacity: 0.6; }
+            100% { transform: translate(0, 0) rotate(360deg) scale(1); opacity: 0.3; }
+        }
+        
+        /* Data Processing Animation */
+        .processing-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #667eea);
+            width: 0%;
+            animation: processingBar 2s ease-in-out infinite;
+        }
+        
+        @keyframes processingBar {
+            0% { width: 0%; }
+            50% { width: 100%; }
+            100% { width: 0%; }
+        }
+        
+        .removed { 
+            background: #ffe6e6; 
+            color: #c0392b; 
+            text-decoration: line-through; 
+            position: relative;
+            animation: highlightRemoved 0.5s ease-in-out;
+        }
+        
+        .added { 
+            background: #e6ffe6; 
+            color: #27ae60; 
+            font-weight: bold; 
+            position: relative;
+            animation: highlightAdded 0.5s ease-in-out;
+        }
+        
+        @keyframes highlightRemoved {
+            0% { background: #ffe6e6; transform: scale(1); }
+            50% { background: #ffcccc; transform: scale(1.02); }
+            100% { background: #ffe6e6; transform: scale(1); }
+        }
+        
+        @keyframes highlightAdded {
+            0% { background: #e6ffe6; transform: scale(1); }
+            50% { background: #ccffcc; transform: scale(1.02); }
+            100% { background: #e6ffe6; transform: scale(1); }
+        }
+        
         .brand { font-size: 2rem; font-weight: bold; color: #2c3e50; margin-bottom: 1rem; }
         .comparison-table { 
             background: rgba(255, 255, 255, 0.95); 
@@ -27,13 +96,33 @@
             opacity: 0;
             transform: translateY(40px);
             animation: slideInBox 1s 0.5s forwards;
+            position: relative;
         }
+        
+        .comparison-table::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(102, 126, 234, 0.05) 50%, transparent 70%);
+            transform: translateX(-100%);
+            animation: tableShimmer 4s infinite;
+        }
+        
+        @keyframes tableShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
         @keyframes slideInBox {
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+        
         .header-container { 
             display: flex; 
             align-items: center; 
@@ -45,18 +134,41 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
         }
+        
+        .header-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transform: translateX(-100%);
+            animation: headerShimmer 5s infinite;
+        }
+        
+        @keyframes headerShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
         .logo { 
             width: 80px; 
             height: 80px; 
             margin-right: 1rem; 
             object-fit: contain;
             animation: floatLogo 3s ease-in-out infinite alternate;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
         }
+        
         @keyframes floatLogo {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-12px); }
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-12px) rotate(2deg); }
         }
+        
         .brand-text { 
             font-size: 2.5rem; 
             font-weight: 700; 
@@ -68,7 +180,24 @@
             opacity: 0;
             transform: translateX(-40px);
             animation: slideInBrand 1s 0.2s forwards;
+            position: relative;
         }
+        
+        .brand-text::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            animation: underlineExpand 1s 1.2s forwards;
+        }
+        
+        @keyframes underlineExpand {
+            to { width: 100%; }
+        }
+        
         @keyframes slideInBrand {
             to {
                 opacity: 1;
@@ -87,6 +216,23 @@
             transition: all 0.3s ease;
             box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
             will-change: transform;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-secondary:hover::before {
+            left: 100%;
         }
         
         .btn-secondary:hover {
@@ -100,6 +246,7 @@
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
         }
         
         .table th {
@@ -108,46 +255,184 @@
             font-weight: 600;
             padding: 15px;
             border: none;
+            position: relative;
+        }
+        
+        .table th::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            animation: headerScan 3s infinite;
+        }
+        
+        @keyframes headerScan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         
         .table td {
             padding: 12px 15px;
             border-bottom: 1px solid #e1e8ed;
             vertical-align: top;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .table tbody tr {
+            transition: all 0.3s ease;
+            animation: rowSlideIn 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        
+        .table tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        .table tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        .table tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        .table tbody tr:nth-child(4) { animation-delay: 0.4s; }
+        .table tbody tr:nth-child(5) { animation-delay: 0.5s; }
+        .table tbody tr:nth-child(6) { animation-delay: 0.6s; }
+        .table tbody tr:nth-child(7) { animation-delay: 0.7s; }
+        .table tbody tr:nth-child(8) { animation-delay: 0.8s; }
+        .table tbody tr:nth-child(9) { animation-delay: 0.9s; }
+        .table tbody tr:nth-child(10) { animation-delay: 1.0s; }
+        
+        @keyframes rowSlideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
         
         .table tbody tr:hover {
             background-color: rgba(102, 126, 234, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        }
+        
+        .table tbody tr:hover td {
+            transform: scale(1.01);
         }
         
         h3 {
             color: #2c3e50;
             font-weight: 700;
             margin-bottom: 1.5rem;
+            position: relative;
+            text-align: center;
+        }
+        
+        h3::before {
+            content: '📊';
+            margin-right: 10px;
+            animation: chartPulse 2s infinite;
+        }
+        
+        @keyframes chartPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        /* Results Summary Animation */
+        .results-summary {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInSummary 0.8s 0.3s forwards;
+        }
+        
+        @keyframes slideInSummary {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .summary-item {
+            display: inline-block;
+            margin: 0 15px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            animation: summaryBounce 2s infinite;
+        }
+        
+        .summary-item:nth-child(1) { 
+            background: linear-gradient(135deg, #667eea, #764ba2); 
+            color: white;
+            animation-delay: 0s;
+        }
+        .summary-item:nth-child(2) { 
+            background: linear-gradient(135deg, #e74c3c, #c0392b); 
+            color: white;
+            animation-delay: 0.5s;
+        }
+        .summary-item:nth-child(3) { 
+            background: linear-gradient(135deg, #27ae60, #2ecc71); 
+            color: white;
+            animation-delay: 1s;
+        }
+        
+        @keyframes summaryBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
     </style>
 </head>
 <body>
+    <!-- Floating Comparison Icons -->
+    <div class="floating-comparison"><i class="fas fa-balance-scale"></i></div>
+    <div class="floating-comparison"><i class="fas fa-search"></i></div>
+    <div class="floating-comparison"><i class="fas fa-file-alt"></i></div>
+    <div class="floating-comparison"><i class="fas fa-check-double"></i></div>
+    <div class="floating-comparison"><i class="fas fa-diff"></i></div>
+    <div class="floating-comparison"><i class="fas fa-clipboard-check"></i></div>
+
 <div class="container py-5">
     <div class="header-container">
+        <div class="processing-bar"></div>
         <img src="{{ url_for('static', filename='images/sf-express-logo.png') }}" alt="SF Express Logo" class="logo">
         <img src="{{ url_for('static', filename='images/ibob-logo.png') }}" alt="IBOB Logo" class="logo">
         <div class="brand-text">PDF Checker</div>
     </div>
-    <h3 class="mb-4 text-center">Comparison Results</h3>
+    
+    <h3 class="mb-4">Comparison Results</h3>
+    
+    <!-- Results Summary -->
+    <div class="results-summary text-center">
+        <div class="summary-item">
+            <i class="fas fa-list-ol"></i> {{ comparison|length }} Paragraphs
+        </div>
+        <div class="summary-item">
+            <i class="fas fa-file-pdf"></i> 2 PDFs Compared
+        </div>
+        <div class="summary-item">
+            <i class="fas fa-check-circle"></i> Analysis Complete
+        </div>
+    </div>
+    
     <div class="table-responsive">
         <table class="table comparison-table">
             <thead>
                 <tr>
-                    <th>Paragraph</th>
-                    <th>PDF 1</th>
-                    <th>PDF 2</th>
+                    <th><i class="fas fa-hashtag"></i> Paragraph</th>
+                    <th><i class="fas fa-file-pdf"></i> PDF 1</th>
+                    <th><i class="fas fa-file-pdf"></i> PDF 2</th>
                 </tr>
             </thead>
             <tbody>
             {% for para, p1, p2 in comparison %}
                 <tr>
-                    <td>{{ para }}</td>
+                    <td><strong>{{ para }}</strong></td>
                     <td>{{ p1|safe }}</td>
                     <td>{{ p2|safe }}</td>
                 </tr>
@@ -156,8 +441,49 @@
         </table>
     </div>
     <div class="text-center mt-4">
-        <a href="/" class="btn btn-secondary">Compare Another</a>
+        <a href="/" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Compare Another
+        </a>
     </div>
 </div>
+
+<script>
+// Add interactive effects for table rows
+document.querySelectorAll('.table tbody tr').forEach((row, index) => {
+    row.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px) scale(1.01)';
+    });
+    
+    row.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+    });
+    
+    // Add click effect
+    row.addEventListener('click', function() {
+        this.style.background = 'rgba(102, 126, 234, 0.1)';
+        setTimeout(() => {
+            this.style.background = '';
+        }, 300);
+    });
+});
+
+// Animate summary items on scroll
+const observerOptions = {
+    threshold: 0.5,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.animationPlayState = 'running';
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.summary-item').forEach(item => {
+    observer.observe(item);
+});
+</script>
 </body>
 </html> 

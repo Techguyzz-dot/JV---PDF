@@ -9,11 +9,17 @@
         body { background: #f8f9fa; }
         .brand { font-size: 2rem; font-weight: bold; color: #2c3e50; margin-bottom: 1rem; }
         .upload-box { background: #fff; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .header-container { display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; }
+        .logo { width: 60px; height: 60px; margin-right: 1rem; }
+        .brand-text { font-size: 2rem; font-weight: bold; color: #2c3e50; }
     </style>
 </head>
 <body>
 <div class="container py-5">
-            <div class="text-center brand">PDF Checker</div>
+    <div class="header-container">
+        <img src="{{ url_for('static', filename='images/ibob-logo.png') }}" alt="IBOB Logo" class="logo">
+        <div class="brand-text">PDF Checker</div>
+    </div>
     <div class="upload-box mx-auto" style="max-width: 500px;">
         <h3 class="mb-4">PDF Comparison Tool</h3>
         <form method="post" enctype="multipart/form-data">

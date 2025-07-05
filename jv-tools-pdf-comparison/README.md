@@ -1,4 +1,4 @@
-# JV Tools - PDF Comparison Tool
+# PDF Checker - PDF Comparison Tool
 
 A web-based PDF comparison tool that allows users to upload two PDF files and view their differences with highlighted changes.
 
